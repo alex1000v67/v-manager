@@ -1,6 +1,7 @@
 import logging
 
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
+from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import new_async_session
 from app.models import MemoryLog
 from app.core import system
@@ -20,8 +21,11 @@ app = FastAPI(
 
 @app.get("/system/uptime")
 async def get_uptime():
-    return uptime()
+    return system.uptime()
 
 @app.get("/system/freeozu")
-async def get_free_ozu():
-    return get_free_ozu()
+async def get_freeozu(session: AsyncSession = Depends(new_async_session)):
+    new_log = MemoryLog(free_value=get_freeozu)
+    session.add(new_log)
+    await session.commit()
+    return system.get_free_ozu()
