@@ -1,6 +1,8 @@
 import logging
 
 from fastapi import FastAPI
+from app.database import new_async_session
+from app.models import MemoryLog
 from app.core import system
 import sys
 import os
