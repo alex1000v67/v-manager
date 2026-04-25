@@ -1,28 +1,25 @@
 import logging
 
-import psycopg2
-import sys
-from core import lifespan
 from fastapi import FastAPI
-import subprocess
-from core import system
+from app.core import system
+import sys
+import os
+print(f"Текущая директория: {os.getcwd()}")
+print(f"Пути поиска модулей: {sys.path}")
 
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
     title="v-manager",
     version="1.0.0",
-    description="alex1000v",
-    openapi_url="/openapi.json",
+    description="Created by alex1000v",
     docs_url="/docs",
 )
 
-psycopg2.pool
-
 @app.get("/system/uptime")
 async def get_uptime():
-    return system.uptime()
+    return uptime()
 
 @app.get("/system/freeozu")
 async def get_free_ozu():
-    return system.get_free_ozu()
+    return get_free_ozu()
