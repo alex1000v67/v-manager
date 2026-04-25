@@ -1,7 +1,12 @@
 import logging
 
+import psycopg2
+import sys
+from core import lifespan
 from fastapi import FastAPI
 import subprocess
+from core import system
+
 logger = logging.getLogger(__name__)
 
 app = FastAPI(
@@ -12,13 +17,12 @@ app = FastAPI(
     docs_url="/docs",
 )
 
+psycopg2.pool
+
 @app.get("/system/uptime")
-def uptime():
-    uptime = subprocess.run("uptime", shell=True, capture_output=True, text=True)
-    return {"output": uptime.stdout.strip()}
+async def get_uptime():
+    return system.uptime()
 
 @app.get("/system/freeozu")
-def freeozu():
-    ozu = subprocess.run("free -m", shell=True, capture_output=True, text=True)
-    return {"output": ozu.stdout.strip()}
-
+async def get_free_ozu():
+    return system.get_free_ozu()
